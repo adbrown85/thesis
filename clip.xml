@@ -1,0 +1,74 @@
+<scene>
+
+    <!-- Shader program for rendering a color -->
+    <program id="color-program">
+        <shader type="vertex" file="basic.vert" />
+        <shader type="fragment" file="basic.frag" />
+        <attribute name="MCVertex" usage="point" />
+    </program>
+
+    <!-- Shader program for rendering texture coordinates -->
+    <program id="coords-program">
+        <shader type="vertex" file="coords.vert" />
+        <shader type="fragment" file="coords.frag" />
+        <attribute name="MCVertex" usage="point" />
+        <attribute name="TexCoord0" usage="coordinate" />
+    </program>
+
+    <!-- Shader program for rendering volumes -->
+    <program id="volume-program" >
+        <shader type="vertex" file="kruger.vert" />
+        <shader type="fragment" file="kruger.frag" />
+        <attribute name="MCVertex" usage="point" />
+        <attribute name="TexCoord0" usage="coordinate" />
+    </program>
+
+    <!-- Clear the color and depth buffers to their default values -->
+    <clear color="0 0 0 0" depth="1" />
+
+    <!-- Create and bind textures -->
+    <texture id="volume-texture" file="head.vlb">
+        <texture id="back-faces-texture" size="768">
+
+            <!-- Draw the back faces of the first cube into the texture -->
+            <framebuffer>
+                <attachment type="texture" usage="color" link="back-faces-texture" />
+                <clear color="0 0 0 0" />
+                <cull mode="front" />
+                <use program="coords-program" >
+                    <instance link="cube-1-group" />
+                </use>
+            </framebuffer>
+
+            <!-- Draw the intersection of the cubes -->
+            <use program="volume-program" >
+                <uniform type="sampler2d" name="Framebuffer" link="back-faces-texture" />
+                <uniform type="sampler3d" name="Volume" link="volume-texture" />
+                <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
+                <cull mode="back" />
+                <boolean of="cube-1 cube-2" />
+            </use>
+
+        </texture>
+    </texture>
+
+    <!-- Draw outlines of cubes -->
+    <polygon mode="line" />
+    <cull mode="none" />
+    <use program="color-program">
+        <group id="cube-1-group">
+            <translate x="-1">
+                <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
+                <uniform type="vec4" name="Color" value="1 0 0 1" />
+                <cube id="cube-1" />
+            </translate>
+        </group>
+        <translate x="+1">
+            <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
+            <uniform type="vec4" name="Color" value="0 1 0 1" />
+            <cube id="cube-2" />
+        </translate>
+    </use>
+    <polygon mode="fill" />
+
+</scene>
