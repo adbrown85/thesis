@@ -103,7 +103,6 @@
                 <use program="intersection-first-pass-program" >
                     <uniform type="sampler2d" name="BackFaceCoords" link="primary-coords-texture" />
                     <uniform type="sampler3d" name="Volume" link="first-volume-texture" />
-                    <uniform type="vec4" name="Color" value="1 0 0 1" />
                     <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
                     <boolean of="cube-1 cube-2" />
                 </use>
@@ -123,7 +122,6 @@
                     <uniform type="sampler2d" name="InitialColor" link="first-pass-texture" />
                     <uniform type="sampler2d" name="BackFaceCoords" link="primary-coords-texture" />
                     <uniform type="sampler3d" name="Volume" link="second-volume-texture" />
-                    <uniform type="vec4" name="Color" value="1 0 0 1" />
                     <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
                     <boolean of="cube-1 cube-2" />
                 </use>
@@ -155,7 +153,6 @@
                     <uniform type="sampler2d" name="SecondBackFaceCoords" link="secondary-coords-texture" />
                     <uniform type="sampler3d" name="FirstVolume" link="first-volume-texture" />
                     <uniform type="sampler3d" name="SecondVolume" link="second-volume-texture" />
-                    <uniform type="vec4" name="Color" value="0 1 0 1" />
                     <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
                     <boolean of="cube-1 cube-2" />
                 </use>
@@ -176,7 +173,6 @@
                     <uniform type="sampler2d" name="InitialColor" link="third-pass-texture" />
                     <uniform type="sampler2d" name="FrontFaceCoords" link="primary-coords-texture" />
                     <uniform type="sampler3d" name="Volume" link="first-volume-texture" />
-                    <uniform type="vec4" name="Color" value="0 0 1 1" />
                     <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
                     <boolean of="cube-1 cube-2" />
                 </use>
@@ -196,7 +192,6 @@
                 <uniform type="sampler2d" name="InitialColor" link="fourth-pass-texture" />
                 <uniform type="sampler2d" name="FrontFaceCoords" link="primary-coords-texture" />
                 <uniform type="sampler3d" name="Volume" link="second-volume-texture" />
-                <uniform type="vec4" name="Color" value="0 0 1 1" />
                 <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
                 <boolean of="cube-1 cube-2" />
             </use>
@@ -250,12 +245,14 @@
         <group id="cube-1-group">
             <translate x="-1">
                 <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
+                <uniform type="vec4" name="Color" value="1 0 0 1" />
                 <cube id="cube-1" />
             </translate>
         </group>
         <group id="cube-2-group">
             <translate x="+1">
                 <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
+                <uniform type="vec4" name="Color" value="0 1 0 1" />
                 <cube id="cube-2" />
             </translate>
         </group>

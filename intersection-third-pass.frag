@@ -6,7 +6,8 @@ uniform sampler2D FirstBackFaceCoords;
 uniform sampler2D SecondBackFaceCoords;
 uniform sampler3D FirstVolume;
 uniform sampler3D SecondVolume;
-uniform vec4 Color = vec4(1);
+uniform vec4 FirstColor = vec4(1, 0, 0, 1);
+uniform vec4 SecondColor = vec4(0, 1, 0, 1);
 
 // Inputs
 in vec4 Coord0;
@@ -44,8 +45,8 @@ void main() {
       vec4 p2 = o2 + (d2 * t);
       float s1 = texture(FirstVolume, p1.stp).r;
       float s2 = texture(SecondVolume, p2.stp).r;
-      vec4 c1 = Color * s1;
-      vec4 c2 = Color * s2;
+      vec4 c1 = FirstColor * s1;
+      vec4 c2 = SecondColor * s2;
       FragColor = mix(FragColor, c1, s1);
       FragColor = mix(FragColor, c2, s2);
       t -= 0.01;

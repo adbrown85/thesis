@@ -4,7 +4,7 @@
 uniform sampler2D InitialColor;
 uniform sampler2D BackFaceCoords;
 uniform sampler3D Volume;
-uniform vec4 Color = vec4(1);
+uniform vec4 Color = vec4(0, 1, 0, 1);
 
 // Inputs
 in vec4 Coord0;
