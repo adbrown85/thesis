@@ -31,6 +31,14 @@
         <attribute name="TexCoord0" usage="texcoord0" />
     </program>
 
+    <!-- Shader program for the second pass of the intersection -->
+    <program id="intersection-second-pass-program" >
+        <shader type="vertex" file="kruger.vert" />
+        <shader type="fragment" file="intersection-second-pass.frag" />
+        <attribute name="MCVertex" usage="position" />
+        <attribute name="TexCoord0" usage="texcoord1" />
+    </program>
+
     <!-- Shader program for the third pass of the intersection -->
     <program id="intersection-third-pass-program" >
         <shader type="vertex" file="kruger.vert" />
@@ -70,6 +78,7 @@
         <texture id="primary-coords-texture" size="768">
         <texture id="secondary-coords-texture" size="768">
         <texture id="first-pass-texture" size="768" >
+        <texture id="second-pass-texture" size="768" >
         <texture id="third-pass-texture" size="768" >
 
             <!-- Render the first volume behind the intersection -->
@@ -92,6 +101,24 @@
             </framebuffer>
 
             <!-- Render the second volume behind the intersection -->
+            <cull mode="front" />
+            <framebuffer>
+                <attachment type="texture" usage="color" link="primary-coords-texture" />
+                <use program="primary-coords-program" >
+                    <instance link="cube-2-group" />
+                </use>
+            </framebuffer>
+            <framebuffer>
+                <attachment type="texture" usage="color" link="second-pass-texture" />
+                <use program="intersection-second-pass-program" >
+                    <uniform type="sampler2d" name="InitialColor" link="first-pass-texture" />
+                    <uniform type="sampler2d" name="BackFaceCoords" link="primary-coords-texture" />
+                    <uniform type="sampler3d" name="Volume" link="second-volume-texture" />
+                    <uniform type="vec4" name="Color" value="1 0 0 1" />
+                    <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
+                    <boolean of="cube-1 cube-2" />
+                </use>
+            </framebuffer>
 
             <!-- Render the intersection -->
             <framebuffer>
@@ -114,7 +141,7 @@
                 <attachment type="texture" usage="color" link="third-pass-texture" />
                 <use program="intersection-third-pass-program" >
                     <cull mode="back" />
-                    <uniform type="sampler2d" name="InitialColor" link="first-pass-texture" />
+                    <uniform type="sampler2d" name="InitialColor" link="second-pass-texture" />
                     <uniform type="sampler2d" name="FirstBackFaceCoords" link="primary-coords-texture" />
                     <uniform type="sampler2d" name="SecondBackFaceCoords" link="secondary-coords-texture" />
                     <uniform type="sampler3d" name="FirstVolume" link="first-volume-texture" />
@@ -174,6 +201,7 @@
                 <instance link="cube-2-group" />
             </use>
 
+        </texture>
         </texture>
         </texture>
         </texture>
