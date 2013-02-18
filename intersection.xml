@@ -211,7 +211,13 @@
                 <uniform type="sampler2d" name="BackFaceCoords" link="primary-coords-texture" />
                 <uniform type="sampler3d" name="Volume" link="first-volume-texture" />
                 <cull mode="back" />
-                <instance link="cube-1-group" />
+                <group id="cube-1-group">
+                    <translate x="-1">
+                        <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
+                        <uniform type="vec4" name="Color" value="1 0 0 1" />
+                        <cube id="cube-1" />
+                    </translate>
+                </group>
             </use>
             <framebuffer>
                 <attachment type="texture" usage="color" link="primary-coords-texture" />
@@ -224,7 +230,13 @@
                 <uniform type="sampler2d" name="BackFaceCoords" link="primary-coords-texture" />
                 <uniform type="sampler3d" name="Volume" link="second-volume-texture" />
                 <cull mode="back" />
-                <instance link="cube-2-group" />
+                <group id="cube-2-group">
+                    <translate x="+1">
+                        <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
+                        <uniform type="vec4" name="Color" value="0 1 0 1" />
+                        <cube id="cube-2" />
+                    </translate>
+                </group>
             </use>
             <blend enabled="false" />
 
@@ -236,26 +248,5 @@
         </texture>
     </texture>
     </texture>
-
-    <!-- Draw outlines -->
-    <polygon mode="line" />
-    <cull mode="none" />
-    <use program="color-program">
-        <uniform type="vec4" name="Color" value="1 1 0 1" />
-        <group id="cube-1-group">
-            <translate x="-1">
-                <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
-                <uniform type="vec4" name="Color" value="1 0 0 1" />
-                <cube id="cube-1" />
-            </translate>
-        </group>
-        <group id="cube-2-group">
-            <translate x="+1">
-                <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
-                <uniform type="vec4" name="Color" value="0 1 0 1" />
-                <cube id="cube-2" />
-            </translate>
-        </group>
-    </use>
 
 </scene>
