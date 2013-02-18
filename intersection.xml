@@ -1,0 +1,228 @@
+<scene>
+
+    <!-- Shader program rendering a solid color -->
+    <program id="color-program">
+        <shader type="vertex" file="basic.vert" />
+        <shader type="fragment" file="basic.frag" />
+        <attribute name="MCVertex" usage="position" />
+    </program>
+
+    <!-- Shader program rendering texture coordinates -->
+    <program id="coords-program">
+        <shader type="vertex" file="coords.vert" />
+        <shader type="fragment" file="coords.frag" />
+        <attribute name="MCVertex" usage="position" />
+        <attribute name="TexCoord0" usage="texcoord0" />
+    </program>
+
+    <!-- Shader program for the first pass of the intersection -->
+    <program id="intersection-first-pass-program" >
+        <shader type="vertex" file="kruger.vert" />
+        <shader type="fragment" file="intersection-first-pass.frag" />
+        <attribute name="MCVertex" usage="position" />
+        <attribute name="TexCoord0" usage="texcoord0" />
+    </program>
+
+    <!-- Shader program for the second pass of the intersection -->
+    <program id="intersection-second-pass-program" >
+        <shader type="vertex" file="kruger.vert" />
+        <shader type="fragment" file="intersection-second-pass.frag" />
+        <attribute name="MCVertex" usage="position" />
+        <attribute name="TexCoord0" usage="texcoord0" />
+    </program>
+
+    <!-- Shader program for the third pass of the intersection -->
+    <program id="intersection-third-pass-program" >
+        <shader type="vertex" file="kruger.vert" />
+        <shader type="fragment" file="intersection-third-pass.frag" />
+        <attribute name="MCVertex" usage="position" />
+        <attribute name="TexCoord0" usage="texcoord0" />
+    </program>
+
+    <!-- Shader program for the volume -->
+    <program id="kruger-program" >
+        <shader type="vertex" file="kruger.vert" />
+        <shader type="fragment" file="kruger.frag" />
+        <attribute name="MCVertex" usage="position" />
+        <attribute name="TexCoord0" usage="texcoord0" />
+    </program>
+
+    <!-- Clear the color and depth buffers -->
+    <clear color="0 0 0 0" depth="1" />
+
+    <!-- Set modes and functions to defaults -->
+    <polygon mode="fill" />
+    <cull mode="back" />
+    <depth function="less" />
+
+    <!-- Bind textures -->
+    <texture id="volume-texture" file="bunny.vlb">
+    <texture id="second-volume-texture" file="head.vlb">
+        <texture id="coords-texture" size="768">
+        <texture id="first-pass-texture" size="768" >
+        <texture id="second-pass-texture" size="768" >
+
+            <!-- Render the first volume behind the intersection -->
+            <cull mode="front" />
+            <framebuffer>
+                <attachment type="texture" usage="color" link="coords-texture" />
+                <use program="coords-program" >
+                    <instance link="cube-1-group" />
+                </use>
+            </framebuffer>
+            <framebuffer>
+                <attachment type="texture" usage="color" link="first-pass-texture" />
+                <use program="intersection-first-pass-program" >
+                    <uniform type="sampler2d" name="BackFaceCoords" link="coords-texture" />
+                    <uniform type="sampler3d" name="Volume" link="volume-texture" />
+                    <uniform type="vec4" name="Color" value="1 0 0 1" />
+                    <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
+                    <boolean of="cube-1 cube-2" />
+                </use>
+            </framebuffer>
+
+            <!-- Render the second volume behind the intersection -->
+
+            <!-- Render the intersection -->
+            <framebuffer>
+                <attachment type="texture" usage="color" link="coords-texture" />
+                <use program="coords-program">
+                    <cull mode="front" />
+                    <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
+                    <boolean of="cube-1 cube-2" />
+                </use>
+            </framebuffer>
+            <framebuffer>
+                <attachment type="texture" usage="color" link="second-pass-texture" />
+                <use program="intersection-second-pass-program" >
+                    <cull mode="back" />
+                    <uniform type="sampler2d" name="InitialColor" link="first-pass-texture" />
+                    <uniform type="sampler2d" name="BackFaceCoords" link="coords-texture" />
+                    <uniform type="sampler3d" name="Volume" link="volume-texture" />
+                    <uniform type="vec4" name="Color" value="0 1 0 1" />
+                    <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
+                    <boolean of="cube-1 cube-2" />
+                </use>
+            </framebuffer>
+
+            <!-- Render the first cube in front of the intersection -->
+            <cull mode="back" />
+            <framebuffer>
+                <attachment type="texture" usage="color" link="coords-texture" />
+                <use program="coords-program" >
+                    <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
+                    <instance link="cube-1-group" />
+                </use>
+            </framebuffer>
+            <use program="intersection-third-pass-program" >
+                <uniform type="sampler2d" name="InitialColor" link="second-pass-texture" />
+                <uniform type="sampler2d" name="FrontFaceCoords" link="coords-texture" />
+                <uniform type="vec4" name="Color" value="0 0 1 1" />
+                <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
+                <boolean of="cube-1 cube-2" />
+            </use>
+
+            <!-- Render the second cube in front of the intersection -->
+
+            <!-- Mask the depth buffer with intersection -->
+
+            <!-- Render everything else depth-sorted -->
+            <depth function="less" />
+            <framebuffer>
+                <attachment type="texture" usage="color" link="coords-texture" />
+                <use program="coords-program" >
+                    <cull mode="front" />
+                    <instance link="cube-1-group" />
+                </use>
+            </framebuffer>
+            <use program="kruger-program" >
+                <uniform type="sampler2d" name="BackFaceCoords" link="coords-texture" />
+                <uniform type="sampler3d" name="Volume" link="volume-texture" />
+                <cull mode="back" />
+                <instance link="cube-1-group" />
+            </use>
+            <framebuffer>
+                <attachment type="texture" usage="color" link="coords-texture" />
+                <use program="coords-program" >
+                    <cull mode="front" />
+                    <instance link="cube-2-group" />
+                </use>
+            </framebuffer>
+            <use program="kruger-program" >
+                <uniform type="sampler2d" name="BackFaceCoords" link="coords-texture" />
+                <uniform type="sampler3d" name="Volume" link="second-volume-texture" />
+                <cull mode="back" />
+                <instance link="cube-2-group" />
+            </use>
+
+            <!--
+               Clear the depth buffer to one and then prime the depth buffer with the back faces
+               of the intersection.  That way when the depth function is set to 'greater', only
+               the things behind the intersection will render.
+
+               If we draw the coordinates here instead of just a color, we'll be able to render
+               one of the volumes.
+             -->
+            <!--
+            <clear depth="1" />
+            <depth function="less" />
+            <cull mode="front" />
+            <polygon mode="fill" />
+            <use program="color-program">
+                <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
+                <uniform type="vec4" name="Color" value="0 0 1 1" />
+                <boolean of="c1 c2" />
+            </use>
+            -->
+
+            <!--
+               Set the depth function to 'greater' and then draw the back faces of the cubes.
+               Since the depth buffer was primed with the back faces of the intersection, only
+               the fragments behind that should render.
+             -->
+            <!--
+            <depth function="greater" />
+            <cull mode="front" />
+            <polygon mode="fill" />
+            <use program="coords-program">
+                <group id="cubes">
+                    <translate x="-1">
+                        <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
+                        <uniform type="vec4" name="Color" value="1 0 0 1" />
+                        <cube id="c1" />
+                    </translate>
+                    <translate x="+1">
+                        <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
+                        <uniform type="vec4" name="Color" value="0 1 0 1" />
+                        <cube id="c2" />
+                    </translate>
+                </group>
+            </use>
+            -->
+
+        </texture>
+        </texture>
+        </texture>
+    </texture>
+    </texture>
+
+    <!-- Draw outlines -->
+    <polygon mode="line" />
+    <cull mode="none" />
+    <use program="color-program">
+        <uniform type="vec4" name="Color" value="1 1 0 1" />
+        <group id="cube-1-group">
+            <translate x="-1">
+                <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
+                <cube id="cube-1" />
+            </translate>
+        </group>
+        <group id="cube-2-group">
+            <translate x="+1">
+                <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
+                <cube id="cube-2" />
+            </translate>
+        </group>
+    </use>
+
+</scene>
