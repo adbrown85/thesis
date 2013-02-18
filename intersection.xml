@@ -62,7 +62,7 @@
     <!-- Set modes and functions to defaults -->
     <polygon mode="fill" />
     <cull mode="back" />
-    <depth function="less" />
+    <depth function="always" />
 
     <!-- Bind textures -->
     <texture id="first-volume-texture" file="bunny.vlb">
