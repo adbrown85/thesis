@@ -56,7 +56,7 @@
     <depth function="less" />
 
     <!-- Bind textures -->
-    <texture id="volume-texture" file="bunny.vlb">
+    <texture id="first-volume-texture" file="bunny.vlb">
     <texture id="second-volume-texture" file="head.vlb">
         <texture id="coords-texture" size="768">
         <texture id="first-pass-texture" size="768" >
@@ -74,7 +74,7 @@
                 <attachment type="texture" usage="color" link="first-pass-texture" />
                 <use program="intersection-first-pass-program" >
                     <uniform type="sampler2d" name="BackFaceCoords" link="coords-texture" />
-                    <uniform type="sampler3d" name="Volume" link="volume-texture" />
+                    <uniform type="sampler3d" name="Volume" link="first-volume-texture" />
                     <uniform type="vec4" name="Color" value="1 0 0 1" />
                     <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
                     <boolean of="cube-1 cube-2" />
@@ -98,7 +98,7 @@
                     <cull mode="back" />
                     <uniform type="sampler2d" name="InitialColor" link="first-pass-texture" />
                     <uniform type="sampler2d" name="BackFaceCoords" link="coords-texture" />
-                    <uniform type="sampler3d" name="Volume" link="volume-texture" />
+                    <uniform type="sampler3d" name="Volume" link="first-volume-texture" />
                     <uniform type="vec4" name="Color" value="0 1 0 1" />
                     <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
                     <boolean of="cube-1 cube-2" />
@@ -137,7 +137,7 @@
             </framebuffer>
             <use program="kruger-program" >
                 <uniform type="sampler2d" name="BackFaceCoords" link="coords-texture" />
-                <uniform type="sampler3d" name="Volume" link="volume-texture" />
+                <uniform type="sampler3d" name="Volume" link="first-volume-texture" />
                 <cull mode="back" />
                 <instance link="cube-1-group" />
             </use>
