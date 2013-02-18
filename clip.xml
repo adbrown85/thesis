@@ -4,23 +4,23 @@
     <program id="color-program">
         <shader type="vertex" file="basic.vert" />
         <shader type="fragment" file="basic.frag" />
-        <attribute name="MCVertex" usage="point" />
+        <attribute name="MCVertex" usage="position" />
     </program>
 
     <!-- Shader program for rendering texture coordinates -->
     <program id="coords-program">
         <shader type="vertex" file="coords.vert" />
         <shader type="fragment" file="coords.frag" />
-        <attribute name="MCVertex" usage="point" />
-        <attribute name="TexCoord0" usage="coordinate" />
+        <attribute name="MCVertex" usage="position" />
+        <attribute name="TexCoord0" usage="texcoord0" />
     </program>
 
     <!-- Shader program for rendering volumes -->
     <program id="volume-program" >
         <shader type="vertex" file="kruger.vert" />
         <shader type="fragment" file="kruger.frag" />
-        <attribute name="MCVertex" usage="point" />
-        <attribute name="TexCoord0" usage="coordinate" />
+        <attribute name="MCVertex" usage="position" />
+        <attribute name="TexCoord0" usage="texcoord0" />
     </program>
 
     <!-- Clear the color and depth buffers to their default values -->
