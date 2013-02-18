@@ -191,6 +191,7 @@
                     <instance link="cube-2-group" />
                 </use>
             </framebuffer>
+            <blend enabled="true" />
             <use program="intersection-fifth-pass-program" >
                 <uniform type="sampler2d" name="InitialColor" link="fourth-pass-texture" />
                 <uniform type="sampler2d" name="FrontFaceCoords" link="primary-coords-texture" />
@@ -199,8 +200,10 @@
                 <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
                 <boolean of="cube-1 cube-2" />
             </use>
+            <blend enabled="false" />
 
             <!-- Render everything else depth-sorted -->
+            <blend enabled="true" />
             <depth function="less" />
             <framebuffer>
                 <attachment type="texture" usage="color" link="primary-coords-texture" />
@@ -228,6 +231,7 @@
                 <cull mode="back" />
                 <instance link="cube-2-group" />
             </use>
+            <blend enabled="false" />
 
         </texture>
         </texture>
