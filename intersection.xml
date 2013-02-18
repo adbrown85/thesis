@@ -31,10 +31,10 @@
         <attribute name="TexCoord0" usage="texcoord0" />
     </program>
 
-    <!-- Shader program for the second pass of the intersection -->
-    <program id="intersection-second-pass-program" >
+    <!-- Shader program for the third pass of the intersection -->
+    <program id="intersection-third-pass-program" >
         <shader type="vertex" file="kruger.vert" />
-        <shader type="fragment" file="intersection-second-pass.frag" />
+        <shader type="fragment" file="intersection-third-pass.frag" />
         <attribute name="MCVertex" usage="position" />
         <attribute name="TexCoord0" usage="texcoord0" />
         <attribute name="TexCoord1" usage="texcoord1" />
@@ -70,7 +70,7 @@
         <texture id="primary-coords-texture" size="768">
         <texture id="secondary-coords-texture" size="768">
         <texture id="first-pass-texture" size="768" >
-        <texture id="second-pass-texture" size="768" >
+        <texture id="third-pass-texture" size="768" >
 
             <!-- Render the first volume behind the intersection -->
             <cull mode="front" />
@@ -111,8 +111,8 @@
                 </use>
             </framebuffer>
             <framebuffer>
-                <attachment type="texture" usage="color" link="second-pass-texture" />
-                <use program="intersection-second-pass-program" >
+                <attachment type="texture" usage="color" link="third-pass-texture" />
+                <use program="intersection-third-pass-program" >
                     <cull mode="back" />
                     <uniform type="sampler2d" name="InitialColor" link="first-pass-texture" />
                     <uniform type="sampler2d" name="FirstBackFaceCoords" link="primary-coords-texture" />
@@ -135,7 +135,7 @@
                 </use>
             </framebuffer>
             <use program="intersection-fourth-pass-program" >
-                <uniform type="sampler2d" name="InitialColor" link="second-pass-texture" />
+                <uniform type="sampler2d" name="InitialColor" link="third-pass-texture" />
                 <uniform type="sampler2d" name="FrontFaceCoords" link="primary-coords-texture" />
                 <uniform type="vec4" name="Color" value="0 0 1 1" />
                 <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
