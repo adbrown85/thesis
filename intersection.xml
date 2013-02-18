@@ -15,6 +15,14 @@
         <attribute name="TexCoord0" usage="texcoord0" />
     </program>
 
+    <!-- Shader program rendering secondary texture coordinates -->
+    <program id="secondary-coords-program">
+        <shader type="vertex" file="coords.vert" />
+        <shader type="fragment" file="coords.frag" />
+        <attribute name="MCVertex" usage="position" />
+        <attribute name="TexCoord0" usage="texcoord1" />
+    </program>
+
     <!-- Shader program for the first pass of the intersection -->
     <program id="intersection-first-pass-program" >
         <shader type="vertex" file="kruger.vert" />
