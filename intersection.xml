@@ -37,6 +37,7 @@
         <shader type="fragment" file="intersection-second-pass.frag" />
         <attribute name="MCVertex" usage="position" />
         <attribute name="TexCoord0" usage="texcoord0" />
+        <attribute name="TexCoord1" usage="texcoord1" />
     </program>
 
     <!-- Shader program for the third pass of the intersection -->
@@ -67,6 +68,7 @@
     <texture id="first-volume-texture" file="bunny.vlb">
     <texture id="second-volume-texture" file="head.vlb">
         <texture id="primary-coords-texture" size="768">
+        <texture id="secondary-coords-texture" size="768">
         <texture id="first-pass-texture" size="768" >
         <texture id="second-pass-texture" size="768" >
 
@@ -101,12 +103,22 @@
                 </use>
             </framebuffer>
             <framebuffer>
+                <attachment type="texture" usage="color" link="secondary-coords-texture" />
+                <use program="secondary-coords-program">
+                    <cull mode="front" />
+                    <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
+                    <boolean of="cube-1 cube-2" />
+                </use>
+            </framebuffer>
+            <framebuffer>
                 <attachment type="texture" usage="color" link="second-pass-texture" />
                 <use program="intersection-second-pass-program" >
                     <cull mode="back" />
                     <uniform type="sampler2d" name="InitialColor" link="first-pass-texture" />
-                    <uniform type="sampler2d" name="BackFaceCoords" link="primary-coords-texture" />
-                    <uniform type="sampler3d" name="Volume" link="first-volume-texture" />
+                    <uniform type="sampler2d" name="FirstBackFaceCoords" link="primary-coords-texture" />
+                    <uniform type="sampler2d" name="SecondBackFaceCoords" link="secondary-coords-texture" />
+                    <uniform type="sampler3d" name="FirstVolume" link="first-volume-texture" />
+                    <uniform type="sampler3d" name="SecondVolume" link="second-volume-texture" />
                     <uniform type="vec4" name="Color" value="0 1 0 1" />
                     <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
                     <boolean of="cube-1 cube-2" />
@@ -161,6 +173,7 @@
                 <instance link="cube-2-group" />
             </use>
 
+        </texture>
         </texture>
         </texture>
         </texture>
