@@ -66,14 +66,14 @@
     <!-- Bind textures -->
     <texture id="first-volume-texture" file="bunny.vlb">
     <texture id="second-volume-texture" file="head.vlb">
-        <texture id="coords-texture" size="768">
+        <texture id="primary-coords-texture" size="768">
         <texture id="first-pass-texture" size="768" >
         <texture id="second-pass-texture" size="768" >
 
             <!-- Render the first volume behind the intersection -->
             <cull mode="front" />
             <framebuffer>
-                <attachment type="texture" usage="color" link="coords-texture" />
+                <attachment type="texture" usage="color" link="primary-coords-texture" />
                 <use program="primary-coords-program" >
                     <instance link="cube-1-group" />
                 </use>
@@ -81,7 +81,7 @@
             <framebuffer>
                 <attachment type="texture" usage="color" link="first-pass-texture" />
                 <use program="intersection-first-pass-program" >
-                    <uniform type="sampler2d" name="BackFaceCoords" link="coords-texture" />
+                    <uniform type="sampler2d" name="BackFaceCoords" link="primary-coords-texture" />
                     <uniform type="sampler3d" name="Volume" link="first-volume-texture" />
                     <uniform type="vec4" name="Color" value="1 0 0 1" />
                     <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
@@ -93,7 +93,7 @@
 
             <!-- Render the intersection -->
             <framebuffer>
-                <attachment type="texture" usage="color" link="coords-texture" />
+                <attachment type="texture" usage="color" link="primary-coords-texture" />
                 <use program="primary-coords-program">
                     <cull mode="front" />
                     <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
@@ -105,7 +105,7 @@
                 <use program="intersection-second-pass-program" >
                     <cull mode="back" />
                     <uniform type="sampler2d" name="InitialColor" link="first-pass-texture" />
-                    <uniform type="sampler2d" name="BackFaceCoords" link="coords-texture" />
+                    <uniform type="sampler2d" name="BackFaceCoords" link="primary-coords-texture" />
                     <uniform type="sampler3d" name="Volume" link="first-volume-texture" />
                     <uniform type="vec4" name="Color" value="0 1 0 1" />
                     <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
@@ -116,7 +116,7 @@
             <!-- Render the first cube in front of the intersection -->
             <cull mode="back" />
             <framebuffer>
-                <attachment type="texture" usage="color" link="coords-texture" />
+                <attachment type="texture" usage="color" link="primary-coords-texture" />
                 <use program="primary-coords-program" >
                     <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
                     <instance link="cube-1-group" />
@@ -124,7 +124,7 @@
             </framebuffer>
             <use program="intersection-third-pass-program" >
                 <uniform type="sampler2d" name="InitialColor" link="second-pass-texture" />
-                <uniform type="sampler2d" name="FrontFaceCoords" link="coords-texture" />
+                <uniform type="sampler2d" name="FrontFaceCoords" link="primary-coords-texture" />
                 <uniform type="vec4" name="Color" value="0 0 1 1" />
                 <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
                 <boolean of="cube-1 cube-2" />
@@ -135,27 +135,27 @@
             <!-- Render everything else depth-sorted -->
             <depth function="less" />
             <framebuffer>
-                <attachment type="texture" usage="color" link="coords-texture" />
+                <attachment type="texture" usage="color" link="primary-coords-texture" />
                 <use program="primary-coords-program" >
                     <cull mode="front" />
                     <instance link="cube-1-group" />
                 </use>
             </framebuffer>
             <use program="kruger-program" >
-                <uniform type="sampler2d" name="BackFaceCoords" link="coords-texture" />
+                <uniform type="sampler2d" name="BackFaceCoords" link="primary-coords-texture" />
                 <uniform type="sampler3d" name="Volume" link="first-volume-texture" />
                 <cull mode="back" />
                 <instance link="cube-1-group" />
             </use>
             <framebuffer>
-                <attachment type="texture" usage="color" link="coords-texture" />
+                <attachment type="texture" usage="color" link="primary-coords-texture" />
                 <use program="primary-coords-program" >
                     <cull mode="front" />
                     <instance link="cube-2-group" />
                 </use>
             </framebuffer>
             <use program="kruger-program" >
-                <uniform type="sampler2d" name="BackFaceCoords" link="coords-texture" />
+                <uniform type="sampler2d" name="BackFaceCoords" link="primary-coords-texture" />
                 <uniform type="sampler3d" name="Volume" link="second-volume-texture" />
                 <cull mode="back" />
                 <instance link="cube-2-group" />
