@@ -3,6 +3,7 @@
 // Uniforms
 uniform sampler2D BackFaceCoords;
 uniform sampler3D Volume;
+uniform vec4 Color = vec4(1);
 
 // Inputs
 in vec4 Coord0;
@@ -32,7 +33,7 @@ void main() {
    while (t > 0) {
       vec4 pos = origin + (direction * t);
       float sample = texture(Volume, pos.stp).r;
-      vec4 color = vec4(sample);
+      vec4 color = Color * sample;
       FragColor = mix(FragColor, color, sample);
       t -= 0.01;
    }
