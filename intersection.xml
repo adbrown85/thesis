@@ -40,10 +40,10 @@
         <attribute name="TexCoord1" usage="texcoord1" />
     </program>
 
-    <!-- Shader program for the third pass of the intersection -->
-    <program id="intersection-third-pass-program" >
+    <!-- Shader program for the fourth pass of the intersection -->
+    <program id="intersection-fourth-pass-program" >
         <shader type="vertex" file="kruger.vert" />
-        <shader type="fragment" file="intersection-third-pass.frag" />
+        <shader type="fragment" file="intersection-fourth-pass.frag" />
         <attribute name="MCVertex" usage="position" />
         <attribute name="TexCoord0" usage="texcoord0" />
     </program>
@@ -134,7 +134,7 @@
                     <instance link="cube-1-group" />
                 </use>
             </framebuffer>
-            <use program="intersection-third-pass-program" >
+            <use program="intersection-fourth-pass-program" >
                 <uniform type="sampler2d" name="InitialColor" link="second-pass-texture" />
                 <uniform type="sampler2d" name="FrontFaceCoords" link="primary-coords-texture" />
                 <uniform type="vec4" name="Color" value="0 0 1 1" />
