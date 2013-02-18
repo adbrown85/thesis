@@ -124,8 +124,6 @@
 
             <!-- Render the second cube in front of the intersection -->
 
-            <!-- Mask the depth buffer with intersection -->
-
             <!-- Render everything else depth-sorted -->
             <depth function="less" />
             <framebuffer>
@@ -154,51 +152,6 @@
                 <cull mode="back" />
                 <instance link="cube-2-group" />
             </use>
-
-            <!--
-               Clear the depth buffer to one and then prime the depth buffer with the back faces
-               of the intersection.  That way when the depth function is set to 'greater', only
-               the things behind the intersection will render.
-
-               If we draw the coordinates here instead of just a color, we'll be able to render
-               one of the volumes.
-             -->
-            <!--
-            <clear depth="1" />
-            <depth function="less" />
-            <cull mode="front" />
-            <polygon mode="fill" />
-            <use program="color-program">
-                <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
-                <uniform type="vec4" name="Color" value="0 0 1 1" />
-                <boolean of="c1 c2" />
-            </use>
-            -->
-
-            <!--
-               Set the depth function to 'greater' and then draw the back faces of the cubes.
-               Since the depth buffer was primed with the back faces of the intersection, only
-               the fragments behind that should render.
-             -->
-            <!--
-            <depth function="greater" />
-            <cull mode="front" />
-            <polygon mode="fill" />
-            <use program="coords-program">
-                <group id="cubes">
-                    <translate x="-1">
-                        <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
-                        <uniform type="vec4" name="Color" value="1 0 0 1" />
-                        <cube id="c1" />
-                    </translate>
-                    <translate x="+1">
-                        <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
-                        <uniform type="vec4" name="Color" value="0 1 0 1" />
-                        <cube id="c2" />
-                    </translate>
-                </group>
-            </use>
-            -->
 
         </texture>
         </texture>
