@@ -42,7 +42,7 @@
 
             <!-- Draw the intersection of the cubes -->
             <use program="volume-program" >
-                <uniform type="sampler2d" name="Framebuffer" link="back-faces-texture" />
+                <uniform type="sampler2d" name="BackFaceCoords" link="back-faces-texture" />
                 <uniform type="sampler3d" name="Volume" link="volume-texture" />
                 <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
                 <cull mode="back" />

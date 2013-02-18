@@ -1,7 +1,7 @@
 #version 140
 
 // Uniforms
-uniform sampler2D Framebuffer;
+uniform sampler2D BackFaceCoords;
 uniform sampler3D Volume;
 
 // Inputs
@@ -19,7 +19,7 @@ void main() {
    FragColor = vec4(0, 0, 0, 0);
 
    // Compute ray
-   vec4 exit = texelFetch(Framebuffer, ivec2(gl_FragCoord.xy), 0);
+   vec4 exit = texelFetch(BackFaceCoords, ivec2(gl_FragCoord.xy), 0);
    vec4 origin = Coord0;
    vec4 direction = normalize(exit - origin);
 
