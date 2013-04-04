@@ -200,44 +200,50 @@
             <!-- Render everything else depth-sorted -->
             <blend enabled="true" />
             <depth function="less" />
-            <framebuffer>
-                <attachment type="texture" usage="color" link="primary-coords-texture" />
-                <use program="primary-coords-program" >
-                    <cull mode="front" />
-                    <instance link="cube-1-group" />
-                </use>
-            </framebuffer>
-            <use program="kruger-program" >
-                <uniform type="sampler2d" name="BackFaceCoords" link="primary-coords-texture" />
-                <uniform type="sampler3d" name="Volume" link="first-volume-texture" />
-                <cull mode="back" />
-                <group id="cube-1-group">
-                    <translate x="-1">
-                        <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
-                        <uniform type="vec4" name="Color" value="1 0 0 1" />
-                        <cube id="cube-1" />
-                    </translate>
+            <sort>
+                <group id="cube-1-sorting-group">
+                    <framebuffer>
+                        <attachment type="texture" usage="color" link="primary-coords-texture" />
+                        <use program="primary-coords-program" >
+                            <cull mode="front" />
+                            <instance link="cube-1-group" />
+                        </use>
+                    </framebuffer>
+                    <use program="kruger-program" >
+                        <uniform type="sampler2d" name="BackFaceCoords" link="primary-coords-texture" />
+                        <uniform type="sampler3d" name="Volume" link="first-volume-texture" />
+                        <cull mode="back" />
+                        <group id="cube-1-group">
+                            <translate x="-1">
+                                <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
+                                <uniform type="vec4" name="Color" value="1 0 0 1" />
+                                <cube id="cube-1" />
+                            </translate>
+                        </group>
+                    </use>
                 </group>
-            </use>
-            <framebuffer>
-                <attachment type="texture" usage="color" link="primary-coords-texture" />
-                <use program="primary-coords-program" >
-                    <cull mode="front" />
-                    <instance link="cube-2-group" />
-                </use>
-            </framebuffer>
-            <use program="kruger-program" >
-                <uniform type="sampler2d" name="BackFaceCoords" link="primary-coords-texture" />
-                <uniform type="sampler3d" name="Volume" link="second-volume-texture" />
-                <cull mode="back" />
-                <group id="cube-2-group">
-                    <translate x="+1">
-                        <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
-                        <uniform type="vec4" name="Color" value="0 1 0 1" />
-                        <cube id="cube-2" />
-                    </translate>
+                <group id="cube-2-sorting-group">
+                    <framebuffer>
+                        <attachment type="texture" usage="color" link="primary-coords-texture" />
+                        <use program="primary-coords-program" >
+                            <cull mode="front" />
+                            <instance link="cube-2-group" />
+                        </use>
+                    </framebuffer>
+                    <use program="kruger-program" >
+                        <uniform type="sampler2d" name="BackFaceCoords" link="primary-coords-texture" />
+                        <uniform type="sampler3d" name="Volume" link="second-volume-texture" />
+                        <cull mode="back" />
+                        <group id="cube-2-group">
+                            <translate x="+1">
+                                <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
+                                <uniform type="vec4" name="Color" value="0 1 0 1" />
+                                <cube id="cube-2" />
+                            </translate>
+                        </group>
+                    </use>
                 </group>
-            </use>
+            </sort>
             <blend enabled="false" />
 
         </texture>
