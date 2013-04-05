@@ -104,7 +104,9 @@
                     <uniform type="sampler2d" name="BackFaceCoords" link="primary-coords-texture" />
                     <uniform type="sampler3d" name="Volume" link="first-volume-texture" />
                     <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
-                    <boolean of="cube-1 cube-2" />
+                    <group id="intersection-group">
+                        <boolean of="cube-1 cube-2" />
+                    </group>
                 </use>
             </framebuffer>
 
@@ -123,7 +125,7 @@
                     <uniform type="sampler2d" name="BackFaceCoords" link="primary-coords-texture" />
                     <uniform type="sampler3d" name="Volume" link="second-volume-texture" />
                     <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
-                    <boolean of="cube-1 cube-2" />
+                    <instance link="intersection-group" />
                 </use>
             </framebuffer>
 
@@ -133,7 +135,7 @@
                 <use program="primary-coords-program">
                     <cull mode="front" />
                     <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
-                    <boolean of="cube-1 cube-2" />
+                    <instance link="intersection-group" />
                 </use>
             </framebuffer>
             <framebuffer>
@@ -141,7 +143,7 @@
                 <use program="secondary-coords-program">
                     <cull mode="front" />
                     <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
-                    <boolean of="cube-1 cube-2" />
+                    <instance link="intersection-group" />
                 </use>
             </framebuffer>
             <framebuffer>
@@ -154,7 +156,7 @@
                     <uniform type="sampler3d" name="FirstVolume" link="first-volume-texture" />
                     <uniform type="sampler3d" name="SecondVolume" link="second-volume-texture" />
                     <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
-                    <boolean of="cube-1 cube-2" />
+                    <instance link="intersection-group" />
                 </use>
             </framebuffer>
 
@@ -174,7 +176,7 @@
                     <uniform type="sampler2d" name="FrontFaceCoords" link="primary-coords-texture" />
                     <uniform type="sampler3d" name="Volume" link="first-volume-texture" />
                     <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
-                    <boolean of="cube-1 cube-2" />
+                    <instance link="intersection-group" />
                 </use>
             </framebuffer>
 
@@ -193,7 +195,7 @@
                 <uniform type="sampler2d" name="FrontFaceCoords" link="primary-coords-texture" />
                 <uniform type="sampler3d" name="Volume" link="second-volume-texture" />
                 <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
-                <boolean of="cube-1 cube-2" />
+                <instance link="intersection-group" />
             </use>
             <blend enabled="false" />
 
