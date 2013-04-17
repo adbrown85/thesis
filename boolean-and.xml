@@ -26,7 +26,7 @@
     <!-- Shader program for the first pass of the intersection -->
     <program id="intersection-first-pass-program" >
         <shader type="vertex" file="kruger.vert" />
-        <shader type="fragment" file="intersection-first-pass.frag" />
+        <shader type="fragment" file="boolean-and-first-pass.frag" />
         <attribute name="MCVertex" usage="position" />
         <attribute name="TexCoord0" usage="texcoord0" />
     </program>
@@ -34,7 +34,7 @@
     <!-- Shader program for the second pass of the intersection -->
     <program id="intersection-second-pass-program" >
         <shader type="vertex" file="kruger.vert" />
-        <shader type="fragment" file="intersection-second-pass.frag" />
+        <shader type="fragment" file="boolean-and-second-pass.frag" />
         <attribute name="MCVertex" usage="position" />
         <attribute name="TexCoord0" usage="texcoord1" />
     </program>
@@ -42,7 +42,7 @@
     <!-- Shader program for the third pass of the intersection -->
     <program id="intersection-third-pass-program" >
         <shader type="vertex" file="kruger.vert" />
-        <shader type="fragment" file="intersection-third-pass.frag" />
+        <shader type="fragment" file="boolean-and-third-pass.frag" />
         <attribute name="MCVertex" usage="position" />
         <attribute name="TexCoord0" usage="texcoord0" />
         <attribute name="TexCoord1" usage="texcoord1" />
@@ -51,7 +51,7 @@
     <!-- Shader program for the fourth pass of the intersection -->
     <program id="intersection-fourth-pass-program" >
         <shader type="vertex" file="kruger.vert" />
-        <shader type="fragment" file="intersection-fourth-pass.frag" />
+        <shader type="fragment" file="boolean-and-fourth-pass.frag" />
         <attribute name="MCVertex" usage="position" />
         <attribute name="TexCoord0" usage="texcoord0" />
     </program>
@@ -59,7 +59,7 @@
     <!-- Shader program for the fifth pass of the intersection with the second volume -->
     <program id="intersection-fifth-pass-program" >
         <shader type="vertex" file="kruger.vert" />
-        <shader type="fragment" file="intersection-fifth-pass.frag" />
+        <shader type="fragment" file="boolean-and-fifth-pass.frag" />
         <attribute name="MCVertex" usage="position" />
         <attribute name="TexCoord0" usage="texcoord1" />
     </program>
