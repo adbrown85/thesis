@@ -105,7 +105,7 @@
                     <uniform type="sampler3d" name="Volume" link="first-volume-texture" />
                     <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
                     <group id="intersection-group">
-                        <boolean of="cube-1 cube-2" />
+                        <booleanAnd of="cube-1 cube-2" />
                     </group>
                 </use>
             </framebuffer>
