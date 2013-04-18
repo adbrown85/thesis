@@ -20,6 +20,16 @@
     </program>
 
     <!--
+     * Shader program for rendering a shape's second set of texture coordinates.
+    -->
+    <program id="second-coords-program">
+        <shader type="vertex" file="coords.vert" />
+        <shader type="fragment" file="coords.frag" />
+        <attribute name="MCVertex" usage="position" />
+        <attribute name="TexCoord0" usage="texcoord1" />
+    </program>
+
+    <!--
      * Shader program for rendering volumes in the first pass.
     -->
     <program id="first-pass-program">
@@ -27,6 +37,17 @@
         <shader type="fragment" file="boolean-xor-first-pass.frag" />
         <attribute name="MCVertex" usage="position" />
         <attribute name="TexCoord0" usage="texcoord0" />
+    </program>
+
+    <!--
+     * Shader program for rendering volumes in the second pass.
+    -->
+    <program id="second-pass-program">
+        <shader type="vertex" file="kruger.vert" />
+        <shader type="fragment" file="boolean-xor-second-pass.frag" />
+        <attribute name="MCVertex" usage="position" />
+        <attribute name="TexCoord0" usage="texcoord0" />
+        <attribute name="TexCoord1" usage="texcoord1" />
     </program>
 
     <!--
@@ -132,6 +153,49 @@
                 <uniform type="sampler2d" name="BackFacesTexture" link="second-back-faces-texture" />
                 <uniform type="sampler3d" name="VolumeTexture" link="second-volume-texture" />
                 <instance link="second-boolean-xor-group" />
+            </use>
+        </framebuffer>
+
+        <!--
+         * Render the intersection.
+        -->
+        <framebuffer>
+            <attachment type="texture" usage="color" link="first-back-faces-texture" />
+            <attachment type="renderbuffer" usage="depth" link="depth-renderbuffer" />
+            <cull mode="front" />
+            <depth function="greater" />
+            <clear depth="0.0" />
+            <use program="coords-program">
+                <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
+                <group id="boolean-and-group">
+                    <booleanAnd of="first-cube second-cube" />
+                </group>
+            </use>
+        </framebuffer>
+        <framebuffer>
+            <attachment type="texture" usage="color" link="second-back-faces-texture" />
+            <attachment type="renderbuffer" usage="depth" link="depth-renderbuffer" />
+            <cull mode="front" />
+            <depth function="greater" />
+            <clear depth="0.0" />
+            <use program="second-coords-program">
+                <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
+                <instance link="boolean-and-group" />
+            </use>
+        </framebuffer>
+        <framebuffer>
+            <attachment type="texture" usage="color" link="accumulation-texture" />
+            <attachment type="renderbuffer" usage="depth" link="depth-renderbuffer" />
+            <depth function="less" />
+            <cull mode="back" />
+            <use program="second-pass-program">
+                <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
+                <uniform type="sampler2d" name="AccumulationTexture" link="accumulation-texture" />
+                <uniform type="sampler2d" name="FirstBackFacesTexture" link="first-back-faces-texture" />
+                <uniform type="sampler2d" name="SecondBackFacesTexture" link="second-back-faces-texture" />
+                <uniform type="sampler3d" name="FirstVolumeTexture" link="first-volume-texture" />
+                <uniform type="sampler3d" name="SecondVolumeTexture" link="second-volume-texture" />
+                <instance link="boolean-and-group" />
             </use>
         </framebuffer>
 
