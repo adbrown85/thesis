@@ -65,7 +65,8 @@
     <texture id="first-volume-texture" file="bunny.vlb">
     <texture id="second-volume-texture" file="head.vlb">
     <texture id="accumulation-texture" size="768">
-    <texture id="back-faces-texture" size="768">
+    <texture id="first-back-faces-texture" size="768">
+    <texture id="second-back-faces-texture" size="768">
 
         <!--
          * Clear the accumulation texture.
@@ -79,7 +80,7 @@
          * Render any pieces of the first cube behind the intersection to the accumulation texture.
         -->
         <framebuffer>
-            <attachment type="texture" usage="color" link="back-faces-texture" />
+            <attachment type="texture" usage="color" link="first-back-faces-texture" />
             <attachment type="renderbuffer" usage="depth" link="depth-renderbuffer" />
             <depth function="greater" />
             <clear depth="0.0" />
@@ -99,7 +100,7 @@
             <cull mode="back" />
             <use program="first-pass-program">
                 <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
-                <uniform type="sampler2d" name="BackFacesTexture" link="back-faces-texture" />
+                <uniform type="sampler2d" name="BackFacesTexture" link="first-back-faces-texture" />
                 <uniform type="sampler3d" name="VolumeTexture" link="first-volume-texture" />
                 <instance link="first-boolean-xor-group" />
             </use>
@@ -109,7 +110,7 @@
          * Render any pieces of the second cube behind the intersection to the accumulation texture.
         -->
         <framebuffer>
-            <attachment type="texture" usage="color" link="back-faces-texture" />
+            <attachment type="texture" usage="color" link="second-back-faces-texture" />
             <attachment type="renderbuffer" usage="depth" link="depth-renderbuffer" />
             <cull mode="front" />
             <depth function="greater" />
@@ -128,7 +129,7 @@
             <cull mode="back" />
             <use program="first-pass-program">
                 <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
-                <uniform type="sampler2d" name="BackFacesTexture" link="back-faces-texture" />
+                <uniform type="sampler2d" name="BackFacesTexture" link="second-back-faces-texture" />
                 <uniform type="sampler3d" name="VolumeTexture" link="second-volume-texture" />
                 <instance link="second-boolean-xor-group" />
             </use>
@@ -138,7 +139,7 @@
          * Render any pieces of the first cube in front of the intersection to the accumulation texture.
         -->
         <framebuffer>
-            <attachment type="texture" usage="color" link="back-faces-texture" />
+            <attachment type="texture" usage="color" link="first-back-faces-texture" />
             <attachment type="renderbuffer" usage="depth" link="depth-renderbuffer" />
             <cull mode="front" />
             <depth function="greater" />
@@ -158,7 +159,7 @@
             <use program="third-pass-program">
                 <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
                 <uniform type="sampler2d" name="AccumulationTexture" link="accumulation-texture" />
-                <uniform type="sampler2d" name="BackFacesTexture" link="back-faces-texture" />
+                <uniform type="sampler2d" name="BackFacesTexture" link="first-back-faces-texture" />
                 <uniform type="sampler3d" name="VolumeTexture" link="first-volume-texture" />
                 <instance link="third-boolean-xor-group" />
             </use>
@@ -168,7 +169,7 @@
          * Render any pieces of the second cube in front of the intersection to the accumulation texture.
         -->
         <framebuffer>
-            <attachment type="texture" usage="color" link="back-faces-texture" />
+            <attachment type="texture" usage="color" link="second-back-faces-texture" />
             <attachment type="renderbuffer" usage="depth" link="depth-renderbuffer" />
             <cull mode="front" />
             <depth function="greater" />
@@ -188,7 +189,7 @@
             <use program="third-pass-program">
                 <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
                 <uniform type="sampler2d" name="AccumulationTexture" link="accumulation-texture" />
-                <uniform type="sampler2d" name="BackFacesTexture" link="back-faces-texture" />
+                <uniform type="sampler2d" name="BackFacesTexture" link="second-back-faces-texture" />
                 <uniform type="sampler3d" name="VolumeTexture" link="second-volume-texture" />
                 <instance link="fourth-boolean-xor-group" />
             </use>
@@ -205,6 +206,7 @@
     <!--
      * Unbind textures
     -->
+    </texture>
     </texture>
     </texture>
     </texture>
