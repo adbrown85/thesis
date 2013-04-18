@@ -1,0 +1,243 @@
+<scene>
+
+    <!--
+     * Shader program for rendering a solid color.
+    -->
+    <program id="color-program">
+        <shader type="vertex" file="basic.vert" />
+        <shader type="fragment" file="basic.frag" />
+        <attribute name="MCVertex" usage="position" />
+    </program>
+
+    <!--
+     * Shader program for rendering texture coordinates.
+    -->
+    <program id="coords-program">
+        <shader type="vertex" file="coords.vert" />
+        <shader type="fragment" file="coords.frag" />
+        <attribute name="MCVertex" usage="position" />
+        <attribute name="TexCoord0" usage="texcoord0" />
+    </program>
+
+    <!--
+     * Shader program for rendering volumes in the first pass.
+    -->
+    <program id="first-pass-program">
+        <shader type="vertex" file="kruger.vert" />
+        <shader type="fragment" file="boolean-xor-first-pass.frag" />
+        <attribute name="MCVertex" usage="position" />
+        <attribute name="TexCoord0" usage="texcoord0" />
+    </program>
+
+    <!--
+     * Shader program for rendering volumes in the third pass.
+    -->
+    <program id="third-pass-program">
+        <shader type="vertex" file="kruger.vert" />
+        <shader type="fragment" file="boolean-xor-third-pass.frag" />
+        <attribute name="MCVertex" usage="position" />
+        <attribute name="TexCoord0" usage="texcoord0" />
+    </program>
+
+    <!--
+     * Shader program for the compositing pass.
+    -->
+    <program id="compositing-pass-program">
+        <shader type="vertex" file="kruger.vert" />
+        <shader type="fragment" file="boolean-xor-compositing-pass.frag" />
+        <attribute name="MCVertex" usage="position" />
+        <attribute name="TexCoord0" usage="texcoord0" />
+    </program>
+
+    <!--
+     * Create a renderbuffer to use for depth testing with framebuffers.
+    -->
+    <renderbuffer id="depth-renderbuffer" format="depth" width="768" height="768" />
+
+    <!--
+     * Clear the scene.
+    -->
+    <clear color="0 0 0 0" depth="1" />
+
+    <!--
+     * Bind textures.
+    -->
+    <texture id="first-volume-texture" file="bunny.vlb">
+    <texture id="second-volume-texture" file="head.vlb">
+    <texture id="first-pass-texture" size="768">
+    <texture id="third-pass-texture" size="768">
+    <texture id="back-faces-texture" size="768">
+
+        <!--
+         * Clear the first pass texture.
+        -->
+        <framebuffer>
+            <attachment type="texture" usage="color" link="first-pass-texture" />
+            <clear color="0 0 0 0" />
+        </framebuffer>
+
+        <!--
+         * Render any pieces of the first cube behind the intersection to the first-pass texture.
+        -->
+        <framebuffer>
+            <attachment type="texture" usage="color" link="back-faces-texture" />
+            <attachment type="renderbuffer" usage="depth" link="depth-renderbuffer" />
+            <depth function="greater" />
+            <clear depth="0.0" />
+            <cull mode="front" />
+            <use program="coords-program">
+                <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
+                <group id="first-boolean-xor-group">
+                    <booleanXor of="first-cube second-cube" hide="second-cube" filter="gequal" />
+                </group>
+            </use>
+        </framebuffer>
+        <framebuffer>
+            <attachment type="texture" usage="color" link="first-pass-texture" />
+            <attachment type="renderbuffer" usage="depth" link="depth-renderbuffer" />
+            <depth function="less" />
+            <clear depth="1.0" />
+            <cull mode="back" />
+            <use program="first-pass-program">
+                <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
+                <uniform type="sampler2d" name="BackFacesTexture" link="back-faces-texture" />
+                <uniform type="sampler3d" name="Volume" link="first-volume-texture" />
+                <instance link="first-boolean-xor-group" />
+            </use>
+        </framebuffer>
+
+        <!--
+         * Render any pieces of the second cube behind the intersection to the first-pass texture.
+        -->
+        <framebuffer>
+            <attachment type="texture" usage="color" link="back-faces-texture" />
+            <attachment type="renderbuffer" usage="depth" link="depth-renderbuffer" />
+            <cull mode="front" />
+            <depth function="greater" />
+            <clear depth="0.0" />
+            <use program="coords-program">
+                <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
+                <group id="second-boolean-xor-group">
+                    <booleanXor of="first-cube second-cube" hide="first-cube" filter="gequal" />
+                </group>
+            </use>
+        </framebuffer>
+        <framebuffer>
+            <attachment type="texture" usage="color" link="first-pass-texture" />
+            <attachment type="renderbuffer" usage="depth" link="depth-renderbuffer" />
+            <depth function="less" />
+            <cull mode="back" />
+            <use program="first-pass-program">
+                <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
+                <uniform type="sampler2d" name="BackFacesTexture" link="back-faces-texture" />
+                <uniform type="sampler3d" name="Volume" link="second-volume-texture" />
+                <instance link="second-boolean-xor-group" />
+            </use>
+        </framebuffer>
+
+        <!--
+         * Clear the third pass texture.
+        -->
+        <framebuffer>
+            <attachment type="texture" usage="color" link="third-pass-texture" />
+            <clear color="0 0 0 0" />
+        </framebuffer>
+
+        <!--
+         * Render any pieces of the first cube in front of the intersection to the third-pass texture.
+        -->
+        <framebuffer>
+            <attachment type="texture" usage="color" link="back-faces-texture" />
+            <attachment type="renderbuffer" usage="depth" link="depth-renderbuffer" />
+            <cull mode="front" />
+            <depth function="greater" />
+            <clear depth="0.0" />
+            <use program="coords-program">
+                <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
+                <group id="third-boolean-xor-group">
+                    <booleanXor of="first-cube second-cube" hide="second-cube" filter="less" />
+                </group>
+            </use>
+        </framebuffer>
+        <framebuffer>
+            <attachment type="texture" usage="color" link="third-pass-texture" />
+            <attachment type="renderbuffer" usage="depth" link="depth-renderbuffer" />
+            <depth function="less" />
+            <cull mode="back" />
+            <use program="third-pass-program">
+                <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
+                <uniform type="sampler2d" name="FirstPassTexture" link="first-pass-texture" />
+                <uniform type="sampler2d" name="BackFacesTexture" link="back-faces-texture" />
+                <uniform type="sampler3d" name="Volume" link="first-volume-texture" />
+                <instance link="third-boolean-xor-group" />
+            </use>
+        </framebuffer>
+
+        <!--
+         * Render any pieces of the second cube in front of the intersection to the third-pass texture.
+        -->
+        <framebuffer>
+            <attachment type="texture" usage="color" link="back-faces-texture" />
+            <attachment type="renderbuffer" usage="depth" link="depth-renderbuffer" />
+            <cull mode="front" />
+            <depth function="greater" />
+            <clear depth="0.0" />
+            <use program="coords-program">
+                <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
+                <group id="fourth-boolean-xor-group">
+                    <booleanXor of="first-cube second-cube" hide="first-cube" filter="less" />
+                </group>
+            </use>
+        </framebuffer>
+        <framebuffer>
+            <attachment type="texture" usage="color" link="third-pass-texture" />
+            <attachment type="renderbuffer" usage="depth" link="depth-renderbuffer" />
+            <depth function="less" />
+            <cull mode="back" />
+            <use program="third-pass-program">
+                <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
+                <uniform type="sampler2d" name="FirstPassTexture" link="first-pass-texture" />
+                <uniform type="sampler2d" name="BackFacesTexture" link="back-faces-texture" />
+                <uniform type="sampler3d" name="Volume" link="second-volume-texture" />
+                <instance link="fourth-boolean-xor-group" />
+            </use>
+        </framebuffer>
+
+        <!--
+         * Composite everything together.
+        -->
+        <use program="compositing-pass-program">
+            <uniform type="sampler2d" name="FirstPassTexture" link="first-pass-texture" />
+            <uniform type="sampler2d" name="ThirdPassTexture" link="third-pass-texture" />
+            <instance link="cubes-group" />
+        </use>
+
+    <!--
+     * Unbind textures
+    -->
+    </texture>
+    </texture>
+    </texture>
+    </texture>
+    </texture>
+
+    <!--
+     * Draw outlines of two cubes.
+    -->
+    <cull mode="back" />
+    <use program="color-program">
+        <polygon mode="line" />
+        <group id="cubes-group">
+            <translate x="-1.0" >
+                <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
+                <cube id="first-cube" />
+            </translate>
+            <translate x="+1.0" >
+                <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
+                <cube id="second-cube" />
+            </translate>
+        </group>
+        <polygon mode="fill" />
+    </use>
+
+</scene>
