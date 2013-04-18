@@ -64,20 +64,19 @@
     -->
     <texture id="first-volume-texture" file="bunny.vlb">
     <texture id="second-volume-texture" file="head.vlb">
-    <texture id="first-pass-texture" size="768">
-    <texture id="third-pass-texture" size="768">
+    <texture id="accumulation-texture" size="768">
     <texture id="back-faces-texture" size="768">
 
         <!--
-         * Clear the first pass texture.
+         * Clear the accumulation texture.
         -->
         <framebuffer>
-            <attachment type="texture" usage="color" link="first-pass-texture" />
+            <attachment type="texture" usage="color" link="accumulation-texture" />
             <clear color="0 0 0 0" />
         </framebuffer>
 
         <!--
-         * Render any pieces of the first cube behind the intersection to the first-pass texture.
+         * Render any pieces of the first cube behind the intersection to the accumulation texture.
         -->
         <framebuffer>
             <attachment type="texture" usage="color" link="back-faces-texture" />
@@ -93,7 +92,7 @@
             </use>
         </framebuffer>
         <framebuffer>
-            <attachment type="texture" usage="color" link="first-pass-texture" />
+            <attachment type="texture" usage="color" link="accumulation-texture" />
             <attachment type="renderbuffer" usage="depth" link="depth-renderbuffer" />
             <depth function="less" />
             <clear depth="1.0" />
@@ -107,7 +106,7 @@
         </framebuffer>
 
         <!--
-         * Render any pieces of the second cube behind the intersection to the first-pass texture.
+         * Render any pieces of the second cube behind the intersection to the accumulation texture.
         -->
         <framebuffer>
             <attachment type="texture" usage="color" link="back-faces-texture" />
@@ -123,7 +122,7 @@
             </use>
         </framebuffer>
         <framebuffer>
-            <attachment type="texture" usage="color" link="first-pass-texture" />
+            <attachment type="texture" usage="color" link="accumulation-texture" />
             <attachment type="renderbuffer" usage="depth" link="depth-renderbuffer" />
             <depth function="less" />
             <cull mode="back" />
@@ -136,15 +135,7 @@
         </framebuffer>
 
         <!--
-         * Clear the third pass texture.
-        -->
-        <framebuffer>
-            <attachment type="texture" usage="color" link="third-pass-texture" />
-            <clear color="0 0 0 0" />
-        </framebuffer>
-
-        <!--
-         * Render any pieces of the first cube in front of the intersection to the third-pass texture.
+         * Render any pieces of the first cube in front of the intersection to the accumulation texture.
         -->
         <framebuffer>
             <attachment type="texture" usage="color" link="back-faces-texture" />
@@ -160,13 +151,13 @@
             </use>
         </framebuffer>
         <framebuffer>
-            <attachment type="texture" usage="color" link="third-pass-texture" />
+            <attachment type="texture" usage="color" link="accumulation-texture" />
             <attachment type="renderbuffer" usage="depth" link="depth-renderbuffer" />
             <depth function="less" />
             <cull mode="back" />
             <use program="third-pass-program">
                 <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
-                <uniform type="sampler2d" name="FirstPassTexture" link="first-pass-texture" />
+                <uniform type="sampler2d" name="AccumulationTexture" link="accumulation-texture" />
                 <uniform type="sampler2d" name="BackFacesTexture" link="back-faces-texture" />
                 <uniform type="sampler3d" name="Volume" link="first-volume-texture" />
                 <instance link="third-boolean-xor-group" />
@@ -174,7 +165,7 @@
         </framebuffer>
 
         <!--
-         * Render any pieces of the second cube in front of the intersection to the third-pass texture.
+         * Render any pieces of the second cube in front of the intersection to the accumulation texture.
         -->
         <framebuffer>
             <attachment type="texture" usage="color" link="back-faces-texture" />
@@ -190,13 +181,13 @@
             </use>
         </framebuffer>
         <framebuffer>
-            <attachment type="texture" usage="color" link="third-pass-texture" />
+            <attachment type="texture" usage="color" link="accumulation-texture" />
             <attachment type="renderbuffer" usage="depth" link="depth-renderbuffer" />
             <depth function="less" />
             <cull mode="back" />
             <use program="third-pass-program">
                 <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
-                <uniform type="sampler2d" name="FirstPassTexture" link="first-pass-texture" />
+                <uniform type="sampler2d" name="AccumulationTexture" link="accumulation-texture" />
                 <uniform type="sampler2d" name="BackFacesTexture" link="back-faces-texture" />
                 <uniform type="sampler3d" name="Volume" link="second-volume-texture" />
                 <instance link="fourth-boolean-xor-group" />
@@ -207,15 +198,13 @@
          * Composite everything together.
         -->
         <use program="compositing-pass-program">
-            <uniform type="sampler2d" name="FirstPassTexture" link="first-pass-texture" />
-            <uniform type="sampler2d" name="ThirdPassTexture" link="third-pass-texture" />
+            <uniform type="sampler2d" name="AccumulationTexture" link="accumulation-texture" />
             <instance link="cubes-group" />
         </use>
 
     <!--
      * Unbind textures
     -->
-    </texture>
     </texture>
     </texture>
     </texture>

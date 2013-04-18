@@ -4,8 +4,7 @@
 const float TOLERANCE = 1.0e-6;
 
 // Uniforms
-uniform sampler2D FirstPassTexture;
-uniform sampler2D ThirdPassTexture;
+uniform sampler2D AccumulationTexture;
 
 // Outputs
 out vec4 FragColor;
@@ -15,9 +14,6 @@ out vec4 FragColor;
  */
 void main() {
     ivec2 c = ivec2(gl_FragCoord.xy);
-    vec4 sample = texelFetch(ThirdPassTexture, c, 0);
-    if (sample.a <= TOLERANCE) {
-        sample = texelFetch(FirstPassTexture, c, 0);
-    }
+    vec4 sample = texelFetch(AccumulationTexture, c, 0);
     FragColor = sample;
 }

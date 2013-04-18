@@ -1,7 +1,7 @@
 #version 140
 
 // Uniforms
-uniform sampler2D FirstPassTexture;
+uniform sampler2D AccumulationTexture;
 uniform sampler2D BackFacesTexture;
 uniform sampler3D Volume;
 uniform vec4 Color = vec4(0, 1, 0, 1);
@@ -18,7 +18,7 @@ out vec4 FragColor;
 void main() {
 
    // Initialize fragment color to that of previous pass
-   FragColor = texelFetch(FirstPassTexture, ivec2(gl_FragCoord.xy), 0);
+   FragColor = texelFetch(AccumulationTexture, ivec2(gl_FragCoord.xy), 0);
 
    // Compute ray
    vec4 exit = texelFetch(BackFacesTexture, ivec2(gl_FragCoord.xy), 0);
