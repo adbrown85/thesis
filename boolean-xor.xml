@@ -12,7 +12,7 @@
     <!--
      * Shader program for rendering texture coordinates.
     -->
-    <program id="first-coords-program">
+    <program id="primary-coords-program">
         <shader type="vertex" file="coords.vert" />
         <shader type="fragment" file="coords.frag" />
         <attribute name="MCVertex" usage="position" />
@@ -22,7 +22,7 @@
     <!--
      * Shader program for rendering a shape's second set of texture coordinates.
     -->
-    <program id="second-coords-program">
+    <program id="secondary-coords-program">
         <shader type="vertex" file="coords.vert" />
         <shader type="fragment" file="coords.frag" />
         <attribute name="MCVertex" usage="position" />
@@ -106,7 +106,7 @@
             <depth function="greater" />
             <clear depth="0.0" />
             <cull mode="front" />
-            <use program="first-coords-program">
+            <use program="primary-coords-program">
                 <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
                 <group id="first-boolean-xor-group">
                     <booleanXor of="first-cube second-cube" hide="second-cube" filter="gequal" />
@@ -136,7 +136,7 @@
             <cull mode="front" />
             <depth function="greater" />
             <clear depth="0.0" />
-            <use program="first-coords-program">
+            <use program="primary-coords-program">
                 <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
                 <group id="second-boolean-xor-group">
                     <booleanXor of="first-cube second-cube" hide="first-cube" filter="gequal" />
@@ -165,7 +165,7 @@
             <cull mode="front" />
             <depth function="greater" />
             <clear depth="0.0" />
-            <use program="first-coords-program">
+            <use program="primary-coords-program">
                 <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
                 <group id="boolean-and-group">
                     <booleanAnd of="first-cube second-cube" />
@@ -178,7 +178,7 @@
             <cull mode="front" />
             <depth function="greater" />
             <clear depth="0.0" />
-            <use program="second-coords-program">
+            <use program="secondary-coords-program">
                 <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
                 <instance link="boolean-and-group" />
             </use>
@@ -208,7 +208,7 @@
             <cull mode="front" />
             <depth function="greater" />
             <clear depth="0.0" />
-            <use program="first-coords-program">
+            <use program="primary-coords-program">
                 <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
                 <group id="third-boolean-xor-group">
                     <booleanXor of="first-cube second-cube" hide="second-cube" filter="less" />
@@ -238,7 +238,7 @@
             <cull mode="front" />
             <depth function="greater" />
             <clear depth="0.0" />
-            <use program="first-coords-program">
+            <use program="primary-coords-program">
                 <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
                 <group id="fourth-boolean-xor-group">
                     <booleanXor of="first-cube second-cube" hide="first-cube" filter="less" />
