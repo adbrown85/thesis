@@ -100,7 +100,7 @@
             <use program="first-pass-program">
                 <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
                 <uniform type="sampler2d" name="BackFacesTexture" link="back-faces-texture" />
-                <uniform type="sampler3d" name="Volume" link="first-volume-texture" />
+                <uniform type="sampler3d" name="VolumeTexture" link="first-volume-texture" />
                 <instance link="first-boolean-xor-group" />
             </use>
         </framebuffer>
@@ -129,7 +129,7 @@
             <use program="first-pass-program">
                 <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
                 <uniform type="sampler2d" name="BackFacesTexture" link="back-faces-texture" />
-                <uniform type="sampler3d" name="Volume" link="second-volume-texture" />
+                <uniform type="sampler3d" name="VolumeTexture" link="second-volume-texture" />
                 <instance link="second-boolean-xor-group" />
             </use>
         </framebuffer>
@@ -159,7 +159,7 @@
                 <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
                 <uniform type="sampler2d" name="AccumulationTexture" link="accumulation-texture" />
                 <uniform type="sampler2d" name="BackFacesTexture" link="back-faces-texture" />
-                <uniform type="sampler3d" name="Volume" link="first-volume-texture" />
+                <uniform type="sampler3d" name="VolumeTexture" link="first-volume-texture" />
                 <instance link="third-boolean-xor-group" />
             </use>
         </framebuffer>
@@ -189,7 +189,7 @@
                 <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
                 <uniform type="sampler2d" name="AccumulationTexture" link="accumulation-texture" />
                 <uniform type="sampler2d" name="BackFacesTexture" link="back-faces-texture" />
-                <uniform type="sampler3d" name="Volume" link="second-volume-texture" />
+                <uniform type="sampler3d" name="VolumeTexture" link="second-volume-texture" />
                 <instance link="fourth-boolean-xor-group" />
             </use>
         </framebuffer>
