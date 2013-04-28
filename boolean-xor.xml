@@ -67,7 +67,6 @@
         <shader type="vertex" file="kruger.vert" />
         <shader type="fragment" file="boolean-xor-compositing-pass.frag" />
         <attribute name="MCVertex" usage="position" />
-        <attribute name="TexCoord0" usage="texcoord0" />
     </program>
 
     <!--
