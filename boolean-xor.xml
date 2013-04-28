@@ -263,7 +263,19 @@
         -->
         <use program="compositing-pass-program">
             <uniform type="sampler2d" name="AccumulationTexture" link="accumulation-texture" />
+            <!--
             <instance link="cubes-group" />
+            -->
+            <group id="cubes-group">
+                <translate x="-1.0" >
+                    <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
+                    <cube id="first-cube" />
+                </translate>
+                <translate x="+1.0" >
+                    <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
+                    <cube id="second-cube" />
+                </translate>
+            </group>
         </use>
 
     <!--
@@ -278,20 +290,12 @@
     <!--
      * Draw outlines of two cubes.
     -->
+    <!--
     <cull mode="back" />
     <use program="color-program">
         <polygon mode="line" />
-        <group id="cubes-group">
-            <translate x="-1.0" >
-                <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
-                <cube id="first-cube" />
-            </translate>
-            <translate x="+1.0" >
-                <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
-                <cube id="second-cube" />
-            </translate>
-        </group>
         <polygon mode="fill" />
     </use>
+    -->
 
 </scene>
