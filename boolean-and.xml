@@ -218,7 +218,7 @@
                         <group id="cube-1-group">
                             <translate x="-1">
                                 <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
-                                <uniform type="vec4" name="Color" value="1 0 0 1" />
+                                <uniform type="vec4" name="Color" value="1 1 1 1" />
                                 <cube id="cube-1" />
                             </translate>
                         </group>
@@ -239,7 +239,7 @@
                         <group id="cube-2-group">
                             <translate x="+1">
                                 <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
-                                <uniform type="vec4" name="Color" value="0 1 0 1" />
+                                <uniform type="vec4" name="Color" value="1 1 1 1" />
                                 <cube id="cube-2" />
                             </translate>
                         </group>

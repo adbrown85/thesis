@@ -6,8 +6,8 @@ uniform sampler2D FirstBackFaceCoords;
 uniform sampler2D SecondBackFaceCoords;
 uniform sampler3D FirstVolume;
 uniform sampler3D SecondVolume;
-uniform vec4 FirstColor = vec4(1, 0, 0, 1);
-uniform vec4 SecondColor = vec4(0, 1, 0, 1);
+uniform vec4 FirstColor = vec4(1);
+uniform vec4 SecondColor = vec4(1);
 
 // Inputs
 in vec4 Coord0;
