@@ -3,7 +3,7 @@
 // Uniforms
 uniform sampler2D BackFacesTexture;
 uniform sampler3D VolumeTexture;
-uniform vec4 Color = vec4(1, 0, 0, 1);
+uniform vec4 Color = vec4(1);
 
 // Inputs
 in vec4 Coord0;
