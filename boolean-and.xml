@@ -90,6 +90,24 @@
         <texture id="third-pass-texture" size="768" >
         <texture id="fourth-pass-texture" size="768" >
 
+            <!-- Clear textures -->
+            <framebuffer>
+                <attachment type="texture" usage="color" link="first-pass-texture" />
+                <clear color="0 0 0 0" />
+            </framebuffer>
+            <framebuffer>
+                <attachment type="texture" usage="color" link="second-pass-texture" />
+                <clear color="0 0 0 0" />
+            </framebuffer>
+            <framebuffer>
+                <attachment type="texture" usage="color" link="third-pass-texture" />
+                <clear color="0 0 0 0" />
+            </framebuffer>
+            <framebuffer>
+                <attachment type="texture" usage="color" link="fourth-pass-texture" />
+                <clear color="0 0 0 0" />
+            </framebuffer>
+
             <!-- Render the first volume behind the intersection -->
             <cull mode="front" />
             <framebuffer>
