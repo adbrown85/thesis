@@ -1,5 +1,8 @@
 #version 140
 
+// Constants
+const float TOLERANCE = 1e-2;
+
 // Uniforms
 uniform sampler2D InitialColor;
 uniform sampler2D FrontFaceCoords;
@@ -34,9 +37,14 @@ void main() {
    while (t > 0) {
       vec4 pos = origin + (direction * t);
       float sample = texture(Volume, pos.stp).r;
-      vec4 color = Color * sample;
+      vec4 color = vec4(Color.rgb * sample, 1.0);
       FragColor = mix(FragColor, color, sample);
       t -= 0.01;
+   }
+
+   // Just discard if no contribution
+   if ((FragColor.r <= TOLERANCE) && (FragColor.g <= TOLERANCE) && (FragColor.b <= TOLERANCE)) {
+      discard;
    }
 
    // Set depth

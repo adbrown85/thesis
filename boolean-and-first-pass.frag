@@ -33,7 +33,7 @@ void main() {
    while (t > 0) {
       vec4 pos = origin + (direction * t);
       float sample = texture(Volume, pos.stp).r;
-      vec4 color = Color * sample;
+      vec4 color = vec4((Color.rgb * sample), 1.0);
       FragColor = mix(FragColor, color, sample);
       t -= 0.01;
    }

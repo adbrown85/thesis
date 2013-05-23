@@ -45,8 +45,8 @@ void main() {
       vec4 p2 = o2 + (d2 * t);
       float s1 = texture(FirstVolume, p1.stp).r;
       float s2 = texture(SecondVolume, p2.stp).r;
-      vec4 c1 = FirstColor * s1;
-      vec4 c2 = SecondColor * s2;
+      vec4 c1 = vec4(FirstColor.rgb * s1, 1.0);
+      vec4 c2 = vec4(SecondColor.rgb * s2, 1.0);
       FragColor = mix(FragColor, c1, s1);
       FragColor = mix(FragColor, c2, s2);
       t -= 0.01;
