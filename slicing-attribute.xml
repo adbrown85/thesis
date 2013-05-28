@@ -1,0 +1,51 @@
+<scene>
+
+    <!--
+     * Shader program rendering a volume using slicing.
+    -->
+    <program id="slicing-program">
+        <shader type="vertex" file="slicing-attribute.vert" />
+        <shader type="fragment" file="slicing-attribute.frag" />
+        <attribute name="MCVertex" usage="position" />
+        <attribute name="TexCoord0" usage="texcoord0" />
+        <attribute name="TexUnit" usage="color" />
+    </program>
+
+    <!--
+     * Clear the color and depth buffers.
+    -->
+    <clear color="0 0 0 0" depth="1.0" />
+
+    <!--
+     * Bind the textures.
+    -->
+    <texture id="bunny-texture" file="bunny.vlb">
+    <texture id="head-texture" file="head.vlb">
+
+        <blend enabled="true" />
+
+        <!--
+         * Use shader program.
+        -->
+        <use program="slicing-program">
+        <uniform type="mat4" name="MVPMatrix" usage="projection" />
+        <uniform type="sampler3d" name="FirstVolumeTexture" link="bunny-texture" />
+        <uniform type="sampler3d" name="SecondVolumeTexture" link="head-texture" />
+
+            <!--
+             * Render the volumes.
+            -->
+            <depth function="always" />
+            <slicingVolumeRenderer slices="100" strategy="attribute">
+                <translate x="-1.0">
+                    <volume texture="bunny-texture" />
+                </translate>
+                <translate x="+1.0">
+                    <volume texture="head-texture" />
+                </translate>
+            </slicingVolumeRenderer>
+
+        </use>
+    </texture>
+    </texture>
+</scene>
