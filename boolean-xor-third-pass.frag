@@ -1,5 +1,9 @@
 #version 140
 
+// Constants
+const int SAMPLES = 100;
+const float SAMPLE_RATE = 1.0 / SAMPLES;
+
 // Uniforms
 uniform sampler2D AccumulationTexture;
 uniform sampler2D BackFacesTexture;
@@ -36,6 +40,6 @@ void main() {
       float sample = texture(VolumeTexture, pos.stp).r;
       vec4 color = Color * sample;
       FragColor = mix(FragColor, color, sample);
-      t -= 0.01;
+      t -= SAMPLE_RATE;
    }
 }
