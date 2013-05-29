@@ -1,5 +1,9 @@
 #version 140
 
+// Constants
+const int SAMPLES = 100;
+const float SAMPLE_RATE = 1.0 / SAMPLES;
+
 // Uniforms
 uniform sampler2D InitialColor;
 uniform sampler2D FirstBackFaceCoords;
@@ -49,6 +53,6 @@ void main() {
       vec4 c2 = vec4(SecondColor.rgb * s2, 1.0);
       FragColor = mix(FragColor, c1, s1);
       FragColor = mix(FragColor, c2, s2);
-      t -= 0.01;
+      t -= SAMPLE_RATE;
    }
 }

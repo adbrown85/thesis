@@ -1,6 +1,8 @@
 #version 140
 
 // Constants
+const int SAMPLES = 100;
+const float SAMPLE_RATE = 1.0 / SAMPLES;
 const float TOLERANCE = 1e-2;
 
 // Uniforms
@@ -39,7 +41,7 @@ void main() {
       float sample = texture(Volume, pos.stp).r;
       vec4 color = vec4(Color.rgb * sample, 1.0);
       FragColor = mix(FragColor, color, sample);
-      t -= 0.01;
+      t -= SAMPLE_RATE;
    }
 
    // Just discard if no contribution
