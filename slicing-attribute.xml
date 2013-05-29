@@ -38,10 +38,18 @@
             <depth function="always" />
             <slicingVolumeRenderer slices="100" strategy="attribute">
                 <translate x="-0.15">
-                    <volume texture="bunny-texture" />
+                    <rotate axis="0 1 0" angle="180">
+                        <rotate axis="1 0 0" angle="90">
+                            <volume texture="bunny-texture" />
+                        </rotate>
+                    </rotate>
                 </translate>
                 <translate x="+0.15">
-                    <volume texture="head-texture" />
+                    <rotate axis="0 1 0" angle="180">
+                        <rotate axis="1 0 0" angle="90">
+                            <volume texture="head-texture" />
+                        </rotate>
+                    </rotate>
                 </translate>
             </slicingVolumeRenderer>
 
