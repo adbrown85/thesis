@@ -267,11 +267,11 @@
             <instance link="cubes-group" />
             -->
             <group id="cubes-group">
-                <translate x="-1.0" >
+                <translate x="-0.15" >
                     <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
                     <cube id="first-cube" />
                 </translate>
-                <translate x="+1.0" >
+                <translate x="+0.15" >
                     <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
                     <cube id="second-cube" />
                 </translate>
