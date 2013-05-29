@@ -34,10 +34,10 @@
             -->
             <depth function="always" />
             <slicingVolumeRenderer slices="100" strategy="uniform" uniform="VolumeTexture">
-                <translate x="-1.0">
+                <translate x="-0.15">
                     <volume texture="bunny-texture" />
                 </translate>
-                <translate x="+1.0">
+                <translate x="+0.15">
                     <volume texture="head-texture" />
                 </translate>
             </slicingVolumeRenderer>
