@@ -231,7 +231,7 @@
                         <uniform type="sampler3d" name="Volume" link="first-volume-texture" />
                         <cull mode="back" />
                         <group id="cube-1-group">
-                            <translate x="-1">
+                            <translate x="-0.15">
                                 <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
                                 <uniform type="vec4" name="Color" value="1 1 1 1" />
                                 <cube id="cube-1" />
@@ -252,7 +252,7 @@
                         <uniform type="sampler3d" name="Volume" link="second-volume-texture" />
                         <cull mode="back" />
                         <group id="cube-2-group">
-                            <translate x="+1">
+                            <translate x="+0.15">
                                 <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
                                 <uniform type="vec4" name="Color" value="1 1 1 1" />
                                 <cube id="cube-2" />
