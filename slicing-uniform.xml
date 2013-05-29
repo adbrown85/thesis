@@ -18,8 +18,8 @@
     <!--
      * Bind the textures.
     -->
-    <texture id="bunny-texture" file="bunny.vlb">
     <texture id="head-texture" file="head.vlb">
+    <texture id="bunny-texture" file="bunny.vlb">
 
         <blend enabled="true" />
 
@@ -37,14 +37,14 @@
                 <translate x="-0.15">
                     <rotate axis="0 1 0" angle="180">
                         <rotate axis="1 0 0" angle="90">
-                            <volume texture="bunny-texture" />
+                            <volume texture="head-texture" />
                         </rotate>
                     </rotate>
                 </translate>
                 <translate x="+0.15">
                     <rotate axis="0 1 0" angle="180">
                         <rotate axis="1 0 0" angle="90">
-                            <volume texture="head-texture" />
+                            <volume texture="bunny-texture" />
                         </rotate>
                     </rotate>
                 </translate>
