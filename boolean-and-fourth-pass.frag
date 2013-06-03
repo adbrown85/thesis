@@ -45,9 +45,11 @@ void main() {
    }
 
    // Just discard if no contribution
-   if ((FragColor.r <= TOLERANCE) && (FragColor.g <= TOLERANCE) && (FragColor.b <= TOLERANCE)) {
+   /*
+   if (FragColor.a <= TOLERANCE) {
       discard;
    }
+   */
 
    // Set depth
    gl_FragDepth = 0.0;
