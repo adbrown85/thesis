@@ -1,0 +1,20 @@
+#!/bin/sh
+
+if [ $# != 1 ]; then
+    echo "Usage: $0 <samples>";
+    exit 1;
+fi
+
+SAMPLES=$1
+
+FILES="boolean-and-*-pass.frag boolean-xor-*-pass.frag kruger.frag"
+for i in $FILES; do
+    sed "s/SAMPLES = [0-9]\{1,\}/SAMPLES = $SAMPLES/" $i > $i~;
+    mv $i~ $i;
+done
+
+FILES="slicing-*.xml"
+for i in $FILES; do
+    sed "s/slices=\"[0-9]\{1,\}\"/slices=\"$SAMPLES\"/" $i > $i~;
+    mv $i~ $i;
+done
