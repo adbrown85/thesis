@@ -37,7 +37,7 @@ void main() {
    while (t > 0) {
       vec4 pos = origin + (direction * t);
       float sample = texture(Volume, pos.stp).r;
-      vec4 color = vec4((Color.rgb * sample), 1.0);
+      vec4 color = vec4(sample);
       FragColor = mix(FragColor, color, sample);
       t -= SAMPLE_RATE;
    }
