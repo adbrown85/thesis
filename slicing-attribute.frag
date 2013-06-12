@@ -8,6 +8,11 @@ in float Unit;
 
 out vec4 FragColor;
 
+// Prototypes
+vec3 findNormal(in sampler3D, in vec4);
+float shade(inout vec3 normal);
+
+
 void main() {
 
     float s = Coord0.s;
@@ -25,10 +30,17 @@ void main() {
         discard;
     }
 
+    float sample;
+    vec3 normal;
     if (Unit <= 0.5) {
-        FragColor = texture(FirstVolumeTexture, Coord0.stp);
+        sample = texture(FirstVolumeTexture, Coord0.stp).r;
+        normal = findNormal(FirstVolumeTexture, Coord0);
     } else {
-        FragColor = texture(SecondVolumeTexture, Coord0.stp);
+        sample = texture(SecondVolumeTexture, Coord0.stp).r;
+        normal = findNormal(SecondVolumeTexture, Coord0);
     }
-    FragColor.gba = vec3(FragColor.r);
+
+    float diffuse = shade(normal);
+    FragColor.rgb = vec3(diffuse);
+    FragColor.a = sample;
 }
