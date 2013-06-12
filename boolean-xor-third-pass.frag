@@ -16,6 +16,10 @@ in vec4 Coord0;
 // Outputs
 out vec4 FragColor;
 
+// Prototypes
+vec3 findNormal(in sampler3D, in vec4);
+float shade(inout vec3 normal);
+
 /*
  * Computes the fragment color.
  */
@@ -23,6 +27,9 @@ void main() {
 
    // Initialize fragment color to that of previous pass
    FragColor = texelFetch(AccumulationTexture, ivec2(gl_FragCoord.xy), 0);
+   if (FragColor.a >= 0.95) {
+      discard;
+   }
 
    // Compute ray
    vec4 exit = texelFetch(BackFacesTexture, ivec2(gl_FragCoord.xy), 0);
@@ -34,12 +41,17 @@ void main() {
    float tExit = min(times.x, min(times.y, times.z));
 
    // Sample until out of volume
-   float t = tExit;
-   while (t > 0) {
+   float t = 0;
+   while ((t < tExit) && (FragColor.a < 0.95)) {
       vec4 pos = origin + (direction * t);
       float sample = texture(VolumeTexture, pos.stp).r;
-      vec4 color = Color * sample;
-      FragColor = mix(FragColor, color, sample);
-      t -= SAMPLE_RATE;
+      if (sample > 0) {
+         vec3 normal = findNormal(VolumeTexture, pos);
+         float c = shade(normal);
+         vec3 sampleColor = Color.rgb * c * sample;
+         FragColor.rgb += sampleColor * (1 - FragColor.a);
+         FragColor.a += sample * (1 - FragColor.a);
+      }
+      t += SAMPLE_RATE;
    }
 }
