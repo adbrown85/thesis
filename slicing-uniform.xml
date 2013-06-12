@@ -6,6 +6,8 @@
     <program id="slicing-program">
         <shader type="vertex" file="slicing-uniform.vert" />
         <shader type="fragment" file="slicing-uniform.frag" />
+        <shader type="fragment" file="find-normal.glsl" />
+        <shader type="fragment" file="shade.glsl" />
         <attribute name="MCVertex" usage="position" />
         <attribute name="TexCoord0" usage="texcoord0" />
     </program>

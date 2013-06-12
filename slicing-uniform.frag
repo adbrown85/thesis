@@ -6,6 +6,11 @@ in vec4 Coord0;
 
 out vec4 FragColor;
 
+// Prototypes
+vec3 findNormal(in sampler3D, in vec4);
+float shade(inout vec3 normal);
+
+
 void main() {
 
     float s = Coord0.s;
@@ -23,6 +28,9 @@ void main() {
         discard;
     }
 
-    FragColor = texture(VolumeTexture, Coord0.stp);
-    FragColor.gba = vec3(FragColor.r);
+    float sample = texture(VolumeTexture, Coord0.stp).r;
+    vec3 normal = findNormal(VolumeTexture, Coord0);
+    float diffuse = shade(normal);
+    FragColor.rgb = vec3(diffuse);
+    FragColor.a = sample;
 }
