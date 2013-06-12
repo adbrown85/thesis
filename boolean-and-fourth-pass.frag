@@ -44,13 +44,6 @@ void main() {
       t -= SAMPLE_RATE;
    }
 
-   // Just discard if no contribution
-   /*
-   if (FragColor.a <= TOLERANCE) {
-      discard;
-   }
-   */
-
    // Set depth
    gl_FragDepth = 0.0;
 }
