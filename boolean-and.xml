@@ -146,10 +146,10 @@
             </framebuffer>
 
             <!-- Render the intersection -->
+            <cull mode="front" />
             <framebuffer>
                 <attachment type="texture" usage="color" link="primary-coords-texture" />
                 <use program="primary-coords-program">
-                    <cull mode="front" />
                     <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
                     <group id="intersection-group">
                         <booleanAnd of="cube-1 cube-2" />
@@ -159,15 +159,14 @@
             <framebuffer>
                 <attachment type="texture" usage="color" link="secondary-coords-texture" />
                 <use program="secondary-coords-program">
-                    <cull mode="front" />
                     <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
                     <instance link="intersection-group" />
                 </use>
             </framebuffer>
+            <cull mode="back" />
             <framebuffer>
                 <attachment type="texture" usage="color" link="third-pass-texture" />
                 <use program="intersection-third-pass-program" >
-                    <cull mode="back" />
                     <uniform type="sampler2d" name="InitialColor" link="second-pass-texture" />
                     <uniform type="sampler2d" name="FirstBackFaceCoords" link="primary-coords-texture" />
                     <uniform type="sampler2d" name="SecondBackFaceCoords" link="secondary-coords-texture" />
