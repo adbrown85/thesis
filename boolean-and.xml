@@ -122,9 +122,7 @@
                     <uniform type="sampler2d" name="BackFaceCoords" link="primary-coords-texture" />
                     <uniform type="sampler3d" name="Volume" link="first-volume-texture" />
                     <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
-                    <group id="intersection-group">
-                        <booleanAnd of="cube-1 cube-2" />
-                    </group>
+                    <instance link="intersection-group" />
                 </use>
             </framebuffer>
 
@@ -153,7 +151,9 @@
                 <use program="primary-coords-program">
                     <cull mode="front" />
                     <uniform type="mat4" name="MVPMatrix" usage="viewprojection" />
-                    <instance link="intersection-group" />
+                    <group id="intersection-group">
+                        <booleanAnd of="cube-1 cube-2" />
+                    </group>
                 </use>
             </framebuffer>
             <framebuffer>
