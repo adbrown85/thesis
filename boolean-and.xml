@@ -228,6 +228,7 @@
 
             <!-- Render everything else depth-sorted -->
             <depth function="less" />
+            <blend enabled="true" />
             <sort>
                 <group id="cube-1-sorting-group">
                     <framebuffer>
@@ -272,6 +273,7 @@
                     </use>
                 </group>
             </sort>
+            <blend enabled="false" />
 
         </texture>
         </texture>
