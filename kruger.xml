@@ -52,10 +52,14 @@
             <uniform type="sampler3d" name="Volume" link="volume-texture" />
             <cull mode="back" />
             <group id="cube-group">
-                <translate>
-                    <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
-                    <uniform type="vec4" name="Color" value="1 1 1 1" />
-                    <cube />
+                <translate z="2.5">
+                    <rotate axis="0 1 0" angle="180">
+                    <rotate axis="1 0 0" angle="90">
+                        <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
+                        <uniform type="vec4" name="Color" value="1 1 1 1" />
+                        <cube />
+                    </rotate>
+                    </rotate>
                 </translate>
             </group>
         </use>
