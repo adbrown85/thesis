@@ -1,0 +1,69 @@
+<scene>
+
+    <!--
+     * Shader program for rendering texture coordinates.
+    -->
+    <program id="coords-program">
+        <shader type="vertex" file="coords.vert" />
+        <shader type="fragment" file="coords.frag" />
+        <attribute name="MCVertex" usage="position" />
+        <attribute name="TexCoord0" usage="texcoord0" />
+    </program>
+
+    <!--
+     * Shader program for rendering a volume.
+    -->
+    <program id="kruger-program">
+        <shader type="vertex" file="kruger.vert" />
+        <shader type="fragment" file="kruger.frag" />
+        <shader type="fragment" file="find-normal.glsl" />
+        <shader type="fragment" file="shade.glsl" />
+        <attribute name="MCVertex" usage="position" />
+        <attribute name="TexCoord0" usage="texcoord0" />
+    </program>
+
+    <!--
+     * Clear the scene.
+    -->
+    <clear color="0 0 0 0" depth="1" />
+
+    <!--
+     * Bind textures.
+    -->
+    <texture id="volume-texture" file="bunny.vlb">
+    <texture id="coords-texture" size="768">
+
+        <!--
+         * Render the back faces.
+        -->
+        <framebuffer>
+            <attachment type="texture" usage="color" link="coords-texture" />
+            <use program="coords-program" >
+                <cull mode="front" />
+                <instance link="cube-group" />
+            </use>
+        </framebuffer>
+
+        <!--
+         * Render the front faces.
+         -->
+        <use program="kruger-program">
+            <uniform type="sampler2d" name="BackFaceCoords" link="coords-texture" />
+            <uniform type="sampler3d" name="Volume" link="volume-texture" />
+            <cull mode="back" />
+            <group id="cube-group">
+                <translate>
+                    <uniform type="mat4" name="MVPMatrix" usage="modelviewprojection" />
+                    <uniform type="vec4" name="Color" value="1 1 1 1" />
+                    <cube />
+                </translate>
+            </group>
+        </use>
+
+    <!--
+     * Unbind textures
+    -->
+    </texture>
+    </texture>
+
+</scene>
